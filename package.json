@@ -1,0 +1,123 @@
+{
+  "name": "python-tailwind-sorter",
+  "displayName": "Python Tailwind Sorter",
+  "description": "Sort Tailwind CSS classes in Python files using Tailwind's official ordering",
+  "version": "1.0.0",
+  "publisher": "dgwyer",
+  "author": "David Gwyer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/python-tailwind-sorter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/python-tailwind-sorter/issues"
+  },
+  "homepage": "https://github.com/your-username/python-tailwind-sorter#readme",
+  "keywords": [
+    "tailwindcss",
+    "tailwind",
+    "css",
+    "formatter",
+    "python",
+    "django",
+    "fasthtml",
+    "class-sorting",
+    "prettier"
+  ],
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Formatters",
+    "Programming Languages"
+  ],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#0891b2",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onLanguage:python"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "pythonTailwindSorter.sortClasses",
+        "title": "Sort Tailwind Classes",
+        "category": "Python Tailwind Sorter"
+      },
+      {
+        "command": "pythonTailwindSorter.sortClassesInFile",
+        "title": "Sort Tailwind Classes in File",
+        "category": "Python Tailwind Sorter"
+      }
+    ],
+    "configuration": {
+      "title": "Python Tailwind Sorter",
+      "properties": {
+        "pythonTailwindSorter.formatOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically sort Tailwind classes on file save"
+        },
+        "pythonTailwindSorter.tailwindConfigPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Tailwind config file (relative to workspace root)"
+        },
+        "pythonTailwindSorter.tailwindStylesheet": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Tailwind CSS file (required for Tailwind 4.x support)"
+        },
+        "pythonTailwindSorter.filePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["**/*.py"],
+          "description": "File patterns to process for Tailwind class sorting"
+        },
+        "pythonTailwindSorter.classPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "class\\s*=\\s*[\"']([^\"']*)[\"']",
+            "className\\s*=\\s*[\"']([^\"']*)[\"']"
+          ],
+          "description": "Regex patterns to find class strings in files"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack --config webpack.config.cjs",
+    "watch": "webpack --watch --config webpack.config.cjs",
+    "package": "webpack --mode production --devtool hidden-source-map --config webpack.config.cjs",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "ts-loader": "^9.4.1",
+    "path-browserify": "^1.0.1"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.4.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.6.14"
+  }
+}

@@ -1,0 +1,14 @@
+[project]
+name = "image-scripts"
+version = "0.1.0"
+description = "Download images from URLs and create PDF"
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.25.0",
+    "Pillow>=9.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "img2pdf>=0.4.0",  # Alternative PDF creation method
+]

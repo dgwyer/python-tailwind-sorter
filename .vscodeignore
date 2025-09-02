@@ -1,0 +1,66 @@
+# Development files
+.vscode/**
+.vscode-test/**
+out/test/**
+src/**
+.gitignore
+.yarnrc
+vsc-extension-quickstart.md
+
+# Build files
+**/.eslintrc.json
+node_modules
+*.vsix
+
+# TypeScript
+tsconfig.json
+tslint.json
+
+# Webpack
+webpack.config.cjs
+
+# Testing
+test/**
+.nyc_output
+
+# Documentation (keep README.md, LICENSE, CHANGELOG.md)
+CLAUDE.md
+
+# Source maps
+**/*.map
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env

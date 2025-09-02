@@ -1,0 +1,7 @@
+node_modules
+/dist
+
+/tests
+
+vs-code-publish-ext-guidelines.md
+PUBLISH.md
