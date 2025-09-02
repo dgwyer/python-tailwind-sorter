@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 import { spawn } from 'child_process';
 import { parsePythonFile, generateReplacement, containsTailwindClasses, ClassMatch } from './python-parser';
 
@@ -200,14 +201,78 @@ function getBridgeProcess() {
   return child;
 }
 
+async function detectTailwindConfig(): Promise<{ configPath?: string; stylesheetPath?: string }> {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (!workspaceFolders || workspaceFolders.length === 0) {
+    return {};
+  }
+
+  const rootPath = workspaceFolders[0].uri.fsPath;
+  
+  // Auto-detect Tailwind config
+  const configFiles = ['tailwind.config.js', 'tailwind.config.ts', 'tailwind.config.mjs', 'tailwind.config.cjs'];
+  let configPath: string | undefined;
+  
+  for (const configFile of configFiles) {
+    const fullPath = path.join(rootPath, configFile);
+    if (fs.existsSync(fullPath)) {
+      configPath = configFile;
+      break;
+    }
+  }
+  
+  // Auto-detect CSS files (common locations for TW 4.x)
+  const cssFiles = [
+    'app.css', 'main.css', 'style.css', 'styles.css', 'tailwind.css',
+    'src/app.css', 'src/main.css', 'src/style.css', 'src/styles.css', 'src/tailwind.css', 'src/index.css',
+    'styles/app.css', 'styles/main.css', 'styles/tailwind.css', 'styles/globals.css',
+    'assets/app.css', 'assets/main.css', 'assets/style.css', 'assets/styles.css',
+    'css/app.css', 'css/main.css', 'css/style.css', 'css/styles.css'
+  ];
+  
+  let stylesheetPath: string | undefined;
+  
+  for (const cssFile of cssFiles) {
+    const fullPath = path.join(rootPath, cssFile);
+    if (fs.existsSync(fullPath)) {
+      // Check if this looks like a Tailwind CSS file
+      try {
+        const content = fs.readFileSync(fullPath, 'utf8');
+        if (content.includes('@tailwind') || content.includes('tailwindcss')) {
+          stylesheetPath = cssFile;
+          break;
+        }
+      } catch (error) {
+        // Skip if we can't read the file
+        continue;
+      }
+    }
+  }
+  
+  return { configPath, stylesheetPath };
+}
+
 async function sortClassesUsingBridge(
   matches: ClassMatch[],
   filePath: string
 ): Promise<Array<{ original: string; sorted: string; index: number }>> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const config = vscode.workspace.getConfiguration('pythonTailwindSorter');
-    const tailwindConfigPath = config.get<string>('tailwindConfigPath', '');
-    const tailwindStylesheet = config.get<string>('tailwindStylesheet', '');
+    let tailwindConfigPath = config.get<string>('tailwindConfigPath', '');
+    let tailwindStylesheet = config.get<string>('tailwindStylesheet', '');
+    
+    // Auto-detect if not manually configured
+    if (!tailwindConfigPath || !tailwindStylesheet) {
+      const detected = await detectTailwindConfig();
+      if (!tailwindConfigPath && detected.configPath) {
+        tailwindConfigPath = detected.configPath;
+        outputChannel.appendLine(`Auto-detected Tailwind config: ${detected.configPath}`);
+      }
+      if (!tailwindStylesheet && detected.stylesheetPath) {
+        tailwindStylesheet = detected.stylesheetPath;
+        outputChannel.appendLine(`Auto-detected Tailwind stylesheet: ${detected.stylesheetPath}`);
+      }
+    }
     
     // Prepare input for the bridge
     const input = {

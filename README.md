@@ -14,6 +14,7 @@ A VS Code extension that automatically sorts Tailwind CSS classes in **Python fi
 - **Official Tailwind ordering** - Uses the same sorting logic as prettier-plugin-tailwindcss
 - **Tailwind 3.x & 4.x support** - Full compatibility with latest Tailwind versions
 - **Optimized performance** - Process reuse for faster sorting on multiple operations
+- **Auto-detection for Tailwind 4.x** - Automatically finds CSS files and config, no manual setup required
 - **No external dependencies** - Self-contained extension with bundled dependencies
 
 ## Supported Patterns
@@ -69,7 +70,7 @@ The extension works with sensible defaults out of the box. Optionally configure 
 
 - `formatOnSave` - Automatically sort classes when saving Python files (default: `true`)
 - `tailwindConfigPath` - Path to your Tailwind config file (default: `""`)
-- `tailwindStylesheet` - Path to your Tailwind CSS file (default: `""`, **required for Tailwind 4.x support**)
+- `tailwindStylesheet` - Path to your Tailwind CSS file (default: `""`, auto-detected for Tailwind 4.x)
 - `filePatterns` - File patterns to process (default: `["**/*.py"]`)  
 - `classPatterns` - Custom regex patterns to find class strings (default: includes `class=`, `cls=`, `className=` patterns)
 
@@ -92,8 +93,9 @@ This makes it easy to see exactly how your Tailwind classes were reordered and e
 1. **Python File Analysis** - Scans `.py` files using optimized regex patterns to find Tailwind class strings
 2. **Class Extraction** - Extracts classes from Django templates, FastHTML components, f-strings, dictionaries, and utility functions
 3. **Official Prettier Integration** - Uses prettier-plugin-tailwindcss via persistent Node.js bridge for authentic Tailwind ordering
-4. **Optimized Performance** - Process reuse eliminates startup overhead for multiple operations
-5. **Smart Replacement** - Replaces only changed class strings while preserving surrounding syntax
+4. **Auto-Configuration** - Automatically detects Tailwind config files and CSS stylesheets for seamless setup
+5. **Optimized Performance** - Process reuse eliminates startup overhead for multiple operations
+6. **Smart Replacement** - Replaces only changed class strings while preserving surrounding syntax
 
 ## Tailwind Version Support
 
@@ -101,17 +103,21 @@ This makes it easy to see exactly how your Tailwind classes were reordered and e
 Works automatically with standard Tailwind installations. No additional configuration required.
 
 ### Tailwind 4.x
-Requires the `tailwindStylesheet` setting to point to your CSS file:
+**Auto-detection (recommended):** The extension automatically detects Tailwind 4.x projects by looking for:
+- Common CSS file locations (`app.css`, `src/index.css`, `styles/globals.css`, etc.)
+- Files containing `@tailwind` directives or `tailwindcss` references
+- Tailwind config files (`tailwind.config.js`, etc.)
 
+**Manual configuration (optional):** Override auto-detection by setting:
 ```json
 {
-  "pythonTailwindSorter.tailwindStylesheet": "./app.css"
+  "pythonTailwindSorter.tailwindStylesheet": "./path/to/your/tailwind.css"
 }
 ```
 
 **Compatible with:**
 - Tailwind 4.x npm package
-- `@tailwindcss/browser` CDN
+- `@tailwindcss/browser` CDN  
 - Custom CSS configurations
 
 ## Development
