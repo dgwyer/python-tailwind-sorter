@@ -49,7 +49,7 @@ button_classes = tw("px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
 
 ## Configuration
 
-Configure the extension through VS Code settings:
+The extension works with sensible defaults out of the box. Optionally configure through VS Code settings to override defaults:
 
 ```json
 {
@@ -67,11 +67,11 @@ Configure the extension through VS Code settings:
 
 ### Settings
 
-- `formatOnSave` - Automatically sort classes when saving Python files (default: true)
-- `tailwindConfigPath` - Path to your Tailwind config file (for custom configurations)
-- `tailwindStylesheet` - Path to your Tailwind CSS file (**required for Tailwind 4.x support**)
-- `filePatterns` - File patterns to process (default: ["**/*.py"])  
-- `classPatterns` - Custom regex patterns to find class strings
+- `formatOnSave` - Automatically sort classes when saving Python files (default: `true`)
+- `tailwindConfigPath` - Path to your Tailwind config file (default: `""`)
+- `tailwindStylesheet` - Path to your Tailwind CSS file (default: `""`, **required for Tailwind 4.x support**)
+- `filePatterns` - File patterns to process (default: `["**/*.py"]`)  
+- `classPatterns` - Custom regex patterns to find class strings (default: includes `class=`, `cls=`, `className=` patterns)
 
 ## Commands
 

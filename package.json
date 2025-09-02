@@ -87,6 +87,7 @@
           },
           "default": [
             "class\\s*=\\s*[\"']([^\"']*)[\"']",
+            "cls\\s*=\\s*[\"']([^\"']*)[\"']",
             "className\\s*=\\s*[\"']([^\"']*)[\"']"
           ],
           "description": "Regex patterns to find class strings in files"
